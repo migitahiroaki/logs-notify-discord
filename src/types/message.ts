@@ -13,10 +13,6 @@ export interface VedustSeekerRecord {
   diviation: number;
 }
 
-export interface vedustSeekerResult {
-  [id: string]: VedustSeekerRecord;
-}
-
 /**
  * Discord Webhookのペイロード
  */

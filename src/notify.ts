@@ -5,7 +5,6 @@ import {
   DiscordEmbed,
   DiscordNotification,
   VedustSeekerRecord,
-  vedustSeekerResult,
 } from "./types/message";
 
 const gunzip = promisify(zlib.gunzip);
@@ -26,15 +25,15 @@ export const handler = async (event: CloudWatchLogsEvent): Promise<void> => {
     decompressed.toString("utf-8"),
   );
 
-  const flattened: VedustSeekerRecord[] = data.logEvents.flatMap((o) => {
+  const records: VedustSeekerRecord[] = data.logEvents.map((o) => {
     const parsed = JSON.parse(o.message);
-    const vsr = parsed.message as vedustSeekerResult;
-    return Object.values(vsr);
+    const vsr = parsed.message as VedustSeekerRecord;
+    return vsr;
   });
 
-  console.debug("flattened", flattened);
+  console.debug("records", records);
 
-  const embeds: DiscordEmbed[] = flattened.map(
+  const embeds: DiscordEmbed[] = records.map(
     (le) =>
       ({
         author: {
