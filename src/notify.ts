@@ -44,7 +44,7 @@ export const handler = async (event: CloudWatchLogsEvent): Promise<void> => {
         thumbnail: {
           url: le.imageUrl,
         },
-        color: le.diviation < 0 ? 0x00ff00 : 0xff0000,
+        color: le.deviation < 0 ? 0x00ff00 : 0xff0000,
         fields: [
           {
             name: "archeType",
@@ -63,7 +63,7 @@ export const handler = async (event: CloudWatchLogsEvent): Promise<void> => {
           },
           {
             name: "deviation",
-            value: (le.diviation * 100).toPrecision(SIGNIFICANT_DIGITS),
+            value: (le.deviation * 100).toPrecision(SIGNIFICANT_DIGITS),
             inline: true,
           },
         ],

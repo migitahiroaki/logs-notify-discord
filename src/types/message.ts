@@ -10,7 +10,7 @@ export interface VedustSeekerRecord {
   updatedAt: number;
   dustValue: number;
   dustUnitPrice: number;
-  diviation: number;
+  deviation: number;
 }
 
 /**

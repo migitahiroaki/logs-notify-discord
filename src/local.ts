@@ -19,7 +19,7 @@ const logEvent = {
     updatedAt: 1778810116,
     dustValue: 253.39800000000002,
     dustUnitPrice: 0.48555679962037634,
-    diviation: -0.04190877666679238,
+    deviation: -0.04190877666679238,
   },
 };
 
