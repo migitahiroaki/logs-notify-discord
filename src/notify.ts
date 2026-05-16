@@ -19,6 +19,7 @@ const cache: { [id: string]: number } = {};
 
 export const handler = async (event: CloudWatchLogsEvent): Promise<void> => {
   console.debug("event", event);
+  const existingIdSet = new Set(Object.keys(cache));
 
   // Base64デコード
   const decoded = Buffer.from(event.awslogs.data, "base64");
@@ -54,7 +55,7 @@ export const handler = async (event: CloudWatchLogsEvent): Promise<void> => {
     keysToDelete.forEach((key) => delete cache[key]);
   }
 
-  const embeds: DiscordEmbed[] = toDiscordEmbed(records);
+  const embeds: DiscordEmbed[] = toDiscordEmbed(records, existingIdSet);
   const payload: DiscordNotification = {
     embeds,
   };

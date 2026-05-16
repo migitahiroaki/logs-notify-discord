@@ -7,15 +7,18 @@ import {
 const FRACTION_DIGITS = 2;
 const SIGNIFICANT_DIGITS = 4;
 const DUST_EMOJI = "<:DUST:1427844717634388019>";
+const NEW_EMOJI = "🆕";
+const UPDATED_EMOJI = "🈹";
 
 export const toDiscordEmbed = (
   records: VedustSeekerRecord[],
+  existingIdSet: Set<string>,
 ): DiscordEmbed[] => {
   return records.map(
     (le) =>
       ({
         author: {
-          name: `${le.character}#${le.id}`,
+          name: `${le.character}#${le.id} ${existingIdSet.has(le.id) ? UPDATED_EMOJI : NEW_EMOJI}`,
         },
         title: `${le.priceInMon.toFixed(FRACTION_DIGITS)} MON ($${le.priceInUsd.toFixed(FRACTION_DIGITS)})`,
         description: `${DUST_EMOJI} ${le.treasuryDust.toFixed(FRACTION_DIGITS)} DUST`,
