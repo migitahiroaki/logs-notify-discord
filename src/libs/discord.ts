@@ -28,6 +28,11 @@ export const toDiscordEmbed = (
         color: le.deviation < 0 ? 0x00ff00 : 0xff0000,
         fields: [
           {
+            name: "dustUnitPrice",
+            value: `$${le.dustUnitPrice.toPrecision(SIGNIFICANT_DIGITS)} / DUST`,
+            inline: false,
+          },
+          {
             name: "archeType",
             value: le.archeType,
             inline: true,
@@ -38,13 +43,8 @@ export const toDiscordEmbed = (
             inline: true,
           },
           {
-            name: "dustUnitPrice",
-            value: `$${le.dustUnitPrice.toFixed(FRACTION_DIGITS)} / DUST`,
-            inline: true,
-          },
-          {
             name: "deviation",
-            value: (le.deviation * 100).toPrecision(SIGNIFICANT_DIGITS),
+            value: `${(le.deviation * 100).toPrecision(SIGNIFICANT_DIGITS)} %`,
             inline: true,
           },
         ],
