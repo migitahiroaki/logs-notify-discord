@@ -36,9 +36,9 @@ export const handler = async (event: CloudWatchLogsEvent): Promise<void> => {
       const vsr = parsed.message as VedustSeekerRecord;
 
       // cache がすでに存在して安くなってない場合、skip
-      if (vsr.id in cache && cache[vsr.id] <= vsr.dustUnitPrice) return acc;
+      if (vsr.id in cache && cache[vsr.id] <= vsr.priceInMon) return acc;
       // cache と acc 両方を更新
-      cache[vsr.id] = vsr.dustUnitPrice;
+      cache[vsr.id] = vsr.priceInMon;
       acc.push(vsr);
       return acc;
     },
