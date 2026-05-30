@@ -7,6 +7,8 @@ import {
 const FRACTION_DIGITS = 2;
 const SIGNIFICANT_DIGITS = 4;
 const DUST_EMOJI = "<:DUST:1427844717634388019>";
+const MARKET_BASE_URL =
+  "https://opensea.io/item/monad/0xBB4738D05AD1b3Da57a4881baE62Ce9bb1eEeD6C";
 const NEW_EMOJI = "🆕";
 const UPDATED_EMOJI = "🈹";
 
@@ -15,36 +17,37 @@ export const toDiscordEmbed = (
   existingIdSet: Set<string>,
 ): DiscordEmbed[] => {
   return records.map(
-    (le) =>
+    (r) =>
       ({
         author: {
-          name: `${le.character}#${le.id} ${existingIdSet.has(le.id) ? UPDATED_EMOJI : NEW_EMOJI}`,
+          name: `${r.character}#${r.id} ${existingIdSet.has(r.id) ? UPDATED_EMOJI : NEW_EMOJI}`,
         },
-        title: `${le.priceInMon.toFixed(FRACTION_DIGITS)} MON ($${le.priceInUsd.toFixed(FRACTION_DIGITS)})`,
-        description: `${DUST_EMOJI} ${le.treasuryDust.toFixed(FRACTION_DIGITS)} DUST`,
+        title: `${r.priceInMon.toFixed(FRACTION_DIGITS)} MON ($${r.priceInUsd.toFixed(FRACTION_DIGITS)})`,
+        url: `${MARKET_BASE_URL}/${r.id}`,
+        description: `${DUST_EMOJI} ${r.treasuryDust.toFixed(FRACTION_DIGITS)} DUST`,
         thumbnail: {
-          url: le.imageUrl,
+          url: r.imageUrl,
         },
-        color: le.deviation < 0 ? 0x00ff00 : 0xff0000,
+        color: r.deviation < 0 ? 0x00ff00 : 0xff0000,
         fields: [
           {
             name: "dustUnitPrice",
-            value: `$${le.dustUnitPrice.toPrecision(SIGNIFICANT_DIGITS)} / DUST`,
+            value: `$${r.dustUnitPrice.toPrecision(SIGNIFICANT_DIGITS)} / DUST`,
             inline: false,
           },
           {
             name: "archeType",
-            value: le.archeType,
+            value: r.archeType,
             inline: true,
           },
           {
             name: "rarity",
-            value: le.rarity,
+            value: r.rarity,
             inline: true,
           },
           {
             name: "deviation",
-            value: `${(le.deviation * 100).toPrecision(SIGNIFICANT_DIGITS)} %`,
+            value: `${(r.deviation * 100).toPrecision(SIGNIFICANT_DIGITS)} %`,
             inline: true,
           },
         ],
