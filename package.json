@@ -6,11 +6,13 @@
     "test": "vitest",
     "test:run": "vitest run"
   },
-  "dependencies": {},
   "devDependencies": {
     "@types/aws-lambda": "^8.10.161",
     "@types/node": "^25.6.0",
     "tsx": "^4.19.0",
     "vitest": "^4.1.5"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
   }
 }

@@ -1,4 +1,11 @@
-export interface VedustSeekerRecord {
+import z from "zod";
+
+export interface VedustBaseRecord {
+  id: string;
+  priceInMon: number;
+}
+
+export interface VedustSeekerRecord extends VedustBaseRecord {
   id: string;
   treasuryDust: number;
   imageUrl: string;
@@ -13,48 +20,57 @@ export interface VedustSeekerRecord {
   deviation: number;
 }
 
-/**
- * Discord Webhookのペイロード
- */
-export interface DiscordNotification {
-  username?: string; // Webhookの名前を上書き
-  avatar_url?: string; // Webhookのアイコンを上書き
-  content?: string; // 通常のテキストメッセージ
-  embeds?: DiscordEmbed[]; // 埋め込みコンテンツ（最大10個まで）
-}
+const DiscordEmbedFieldSchema = z.object({
+  name: z.string(),
+  value: z.string(),
+  inline: z.boolean().optional(),
+});
 
 /**
  * 埋め込み（Embed）コンテンツの詳細構造
  */
-export interface DiscordEmbed {
-  title?: string;
-  description?: string;
-  url?: string;
-  timestamp?: string; // ISO8601形式の文字列
-  color?: number; // 10進数の整数（例: 0xff0000 は 16711680）
-  footer?: {
-    text: string;
-    icon_url?: string;
-  };
-  image?: {
-    url: string;
-  };
-  thumbnail?: {
-    url: string;
-  };
-  author?: {
-    name: string;
-    url?: string;
-    icon_url?: string;
-  };
-  fields?: DiscordEmbedField[];
-}
+export const DiscordEmbedSchema = z.object({
+  title: z.string().optional(),
+  description: z.string().optional(),
+  url: z.url().optional(),
+  timestamp: z.string().optional(),
+  color: z.number().optional(),
+  footer: z
+    .object({
+      text: z.string(),
+      icon_url: z.url().optional(),
+    })
+    .optional(),
+  image: z
+    .object({
+      url: z.url(),
+    })
+    .optional(),
+  thumbnail: z
+    .object({
+      url: z.url(),
+    })
+    .optional(),
+  author: z
+    .object({
+      name: z.string(),
+      url: z.url().optional(),
+      icon_url: z.url().optional(),
+    })
+    .optional(),
+  fields: z.array(DiscordEmbedFieldSchema).optional(),
+});
+export type DiscordEmbed = z.infer<typeof DiscordEmbedSchema>;
 
 /**
- * Embed内の各フィールド（項目）
+ * Discord Webhookのペイロード
  */
-interface DiscordEmbedField {
-  name: string;
-  value: string;
-  inline?: boolean; // 横並びにするかどうか
-}
+
+export const DiscordNotificationSchema = z.object({
+  username: z.string().optional(), // Webhookの名前を上書き
+  avatar_url: z.url().optional(), // Webhookのアイコンを上書き
+  content: z.string().optional(), // 通常のテキストメッセージ
+  embeds: z.array(DiscordEmbedSchema).max(10).optional(), // 埋め込みコンテンツ（最大10個まで）
+});
+
+export type DiscordNotification = z.infer<typeof DiscordNotificationSchema>;
